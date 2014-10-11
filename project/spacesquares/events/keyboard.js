@@ -1,16 +1,21 @@
 
 var Keyboard = module.exports = {
-    enabled: false,
-    handlers: [],
+    pressed: {},
     init: function(){
-        console.log('keyboard is listening');
+        this.bindEvents();
     },
-    add: function(handler, scope){
-        var bound = handler.bind(scope);
-        this.handlers.push(bound);
-        document.body.addEventListener('keydown', function(ev){
-            bound(ev);
-        });
+    bindEvents: function(){
+        document.body.addEventListener('keydown', this.keydownHandler.bind(this));
+        document.body.addEventListener('keyup', this.keyupHandler.bind(this));
+    },
+    keydownHandler: function(ev){
+        this.pressed[ev.keyCode] = true;
+    },
+    keyupHandler: function(ev){
+        this.pressed[ev.keyCode] = false;
+    },
+    getPressedKeys: function(){
+        return this.pressed;
     },
     
     KEYS: {

@@ -1,24 +1,28 @@
 var Ship = require('./gameobjects/spaceship.js');
+var events = require('./events/events');
 
-window.Game = module.exports = {
+var Game = module.exports = {
 	init: function(canvas){
-		console.log('inited', canvas);
-        Game.canvas = canvas;
-        Game.ctx = canvas.getContext('2d');
+        this.canvas = canvas;
+        this.ctx = canvas.getContext('2d');
+        events.init();
         this.ship = new Ship();
         this.startGameLoop();
 	}, 
     update: function(){
         this.ctx.clearRect(0,0, this.canvas.width, this.canvas.height);
-        this.ship.draw();
+        this.ship.update();
     }, 
+    draw: function(){
+        this.ship.draw();
+    },
 
     startGameLoop: function(){
         (function loop(){
-            if(this.isPaused){
-                return;
+            if(!this.isPaused){
+                this.update();
+                this.draw();
             }
-            this.update();
             requestAnimationFrame(loop.bind(this));
         }).call(this);
     }
