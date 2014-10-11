@@ -1,5 +1,4 @@
-var Game = require('../game.js'); console.log(Game);
-var Events = require('../events/events.js');
+var Game = require('../game.js');
 var keyboard = require('../events/keyboard.js');
 var KEYS = keyboard.KEYS;
 

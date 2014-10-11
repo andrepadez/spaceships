@@ -1,10 +1,7 @@
-var events = require('./events/events');
-
 var Game = module.exports = {
 	init: function(canvas){
         this.canvas = canvas;
         this.ctx = canvas.getContext('2d');
-        events.init();
         this.spawnGameObjects();
         this.startGameLoop();
 	}, 

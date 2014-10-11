@@ -1,5 +1,5 @@
 module.exports = {
-    eureca: {
-        command: 'nodemon server/eureca.js'
+    server: {
+        command: 'nodemon server/server.js'
     }
 };

@@ -33,6 +33,6 @@ module.exports = function(grunt){
     grunt.registerTask('dev', ['build', 'browserSync', 'watch']);
     grunt.registerTask('test', ['build', 'testem:run:dev']);
 
-    grunt.registerTask('eureca', ['shell:eureca']);
+    grunt.registerTask('server', ['shell:server']);
 
 };

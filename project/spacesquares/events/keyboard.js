@@ -28,6 +28,6 @@ var Keyboard = module.exports = {
         ESC: 27
     }
 };
-
+Keyboard.init();
 
 
