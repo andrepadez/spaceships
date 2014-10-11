@@ -1,0 +1,15 @@
+{
+
+    "src_files": [
+        "node_modules/chai/chai.js",
+        "config/chai_shim.js",
+        "config/require_shim.js",
+        "tests/**/*.js"
+    ],
+    
+    "framework": "mocha",
+    "launch_in_ci": ["PhantomJS"],
+    "launch_in_dev": ["PhantomJS", "Chrome"],
+    "reporting": "spec"
+     
+}
