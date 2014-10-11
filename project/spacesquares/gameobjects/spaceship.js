@@ -47,4 +47,4 @@ var handleKeys = function(){
         limit = Game.canvas.height - this.height;
         this.y = this.y + this.speed > limit? limit : this.y + this.speed;
     }
-}
+};
