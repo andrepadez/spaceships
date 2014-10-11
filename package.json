@@ -22,9 +22,5 @@
     "grunt-shell": "^1.1.1",
     "grunt-text-replace": "^0.3.12"
   },
-  "dependencies": {
-    "engine.io": "^1.4.1",
-    "eureca.io": "^0.6.1",
-    "express": "^4.9.7"
-  }
+  "dependencies": {}
 }

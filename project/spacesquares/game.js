@@ -1,4 +1,3 @@
-var Ship = require('./gameobjects/spaceship.js');
 var events = require('./events/events');
 
 var Game = module.exports = {
@@ -6,9 +5,13 @@ var Game = module.exports = {
         this.canvas = canvas;
         this.ctx = canvas.getContext('2d');
         events.init();
-        this.ship = new Ship();
+        this.spawnGameObjects();
         this.startGameLoop();
 	}, 
+    spawnGameObjects: function(){
+        var Ship = require('./gameobjects/spaceship.js');
+        this.ship = new Ship();
+    },
     update: function(){
         this.ctx.clearRect(0,0, this.canvas.width, this.canvas.height);
         this.ship.update();
