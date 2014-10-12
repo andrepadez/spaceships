@@ -1,8 +1,11 @@
-var Game = require('../game.js');
 var keyboard = require('../events/keyboard.js');
 var KEYS = keyboard.KEYS;
 
-var Ship = module.exports = function(x, y, w, h, s){
+var canvas, ctx;
+
+var Ship = module.exports = function(cvs, x, y, w, h, s){
+    canvas = cvs;
+    ctx = canvas.getContext('2d');
     this.x = x || this.x;
     this.y = y || this.y;
     this.width = w || this.width;
@@ -19,10 +22,10 @@ Ship.prototype = {
     x: 365,
     y: 500,
     draw: function(){
-        Game.ctx.beginPath();
-        Game.ctx.rect(this.x, this.y, this.width, this.height);
-        Game.ctx.fillStyle = this.color;
-        Game.ctx.fill();
+        ctx.beginPath();
+        ctx.rect(this.x, this.y, this.width, this.height);
+        ctx.fillStyle = this.color;
+        ctx.fill();
     },
     update: function(){
         handleKeys.call(this);
@@ -36,14 +39,14 @@ var handleKeys = function(){
         this.x = this.x - this.speed < 0? 0 : this.x - this.speed;
     }
     if(pressed[KEYS.RIGHT]){
-        limit = Game.canvas.width - this.width;
+        limit = canvas.width - this.width;
         this.x = this.x + this.speed >= limit? limit : this.x + this.speed;
     }
     if(pressed[KEYS.UP]){
         this.y = this.y - this.speed < 0? 0 : this.y - this.speed;
     }
     if(pressed[KEYS.DOWN]){
-        limit = Game.canvas.height - this.height;
+        limit = canvas.height - this.height;
         this.y = this.y + this.speed > limit? limit : this.y + this.speed;
     }
 };
