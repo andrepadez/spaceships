@@ -23,6 +23,7 @@
     "grunt-text-replace": "^0.3.12"
   },
   "dependencies": {
-    "socket.io": "^1.1.0"
+    "dnode": "^1.2.0",
+    "shoe": "0.0.15"
   }
 }

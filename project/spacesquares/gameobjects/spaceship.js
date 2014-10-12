@@ -18,7 +18,7 @@ Ship.prototype = {
     height: 70,
     color: '#aaa',
     border: '#666',
-    speed: 5,
+    speed: 20,
     x: 365,
     y: 500,
     draw: function(){

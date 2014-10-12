@@ -1,12 +1,21 @@
-var io = require('socket.io').listen(8000, function(){
-    console.log('listening on port 80');
+var http = require('http');
+var shoe = require('shoe');
+var dnode = require('dnode');
+
+var server = http.createServer();
+server.listen(9999, function(){
+    console.log('listening on port 9999');
 });
 
-io.sockets.on('connection', function(socket){
+var sock = shoe(function(stream){
+    console.log('sock created');
 
-    socket.on('message', function(){
-        console.log('message received', arguments);
-        socket.send('roger that');
-    });
+    var d = dnode({
+        transform: function(s, callback){console.log('in transform', typeof s, s);
+            var res = s.replace(/[aeiou]{2,}/, 'oo').toUpperCase();
+        }
+    })
+    d.pipe(stream).pipe(d);
+});
 
-})
+sock.install(server, '/dnode');

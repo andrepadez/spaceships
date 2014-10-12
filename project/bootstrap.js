@@ -4,14 +4,16 @@ var canvas = document.querySelector('#space');
 
 Game.init(canvas);
 
-var socket = io('http://localhost:8000');
-  socket.on('connect', function(){
-    socket.on('event', function(data){});
-    socket.on('disconnect', function(){});
 
-    socket.on('message', function(message){
-        console.log('message received', message);
+var dnode = require('dnode');
+var shoe = require('shoe');
+
+var stream = shoe('http://localhost:9999/dnode');
+    
+var d = dnode(); console.log(dnode);
+d.on('remote', function (remote) {console.log('here');
+    remote.transform('beep', function (s) {console.log('return');
+        alert('beep => ' + s);
     });
-    socket.send('testing 123');
-  });
-
+});
+d.pipe(stream).pipe(d);
