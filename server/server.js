@@ -2,11 +2,19 @@ var io = require('socket.io').listen(8000, function(){
     console.log('listening on port 80');
 });
 
-io.sockets.on('connection', function(socket){
+var conns = [];
 
-    socket.on('message', function(){
-        console.log('message received', arguments);
-        socket.send('roger that');
+io.sockets.on('connection', function(socket){
+    conns.push(socket);
+
+    socket.on('message', function(action, data){
+        console.log(action, data);
+        conns.forEach(function(conn){
+            if(socket !== conn){
+                conn.send('posUpdated', data);
+            }
+        });
+        
     });
 
 })

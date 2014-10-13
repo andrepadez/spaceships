@@ -9,9 +9,11 @@ var Keyboard = module.exports = {
         document.body.addEventListener('keyup', this.keyupHandler.bind(this));
     },
     keydownHandler: function(ev){
+        ev.preventDefault();
         this.pressed[ev.keyCode] = true;
     },
     keyupHandler: function(ev){
+        //ev.preventDefault();
         this.pressed[ev.keyCode] = false;
     },
     getPressedKeys: function(){

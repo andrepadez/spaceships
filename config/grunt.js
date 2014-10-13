@@ -10,7 +10,7 @@ var config = module.exports = {
                     '<%= config.target.dev %>/build/compiled_layout.css'
                 ], 
                 js: [
-                    'node_modules/socket.io-client/socket.io.js',
+                    //'node_modules/socket.io-client/socket.io.js',
                     'dist/dev/build/<%= pkg.name %>.js'
                 ]
             }

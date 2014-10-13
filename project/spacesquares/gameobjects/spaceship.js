@@ -1,16 +1,24 @@
+var socket = require('../comm/socket.js');
 var keyboard = require('../events/keyboard.js');
 var KEYS = keyboard.KEYS;
 
-var canvas, ctx;
+var Game, canvas, ctx;
 
-var Ship = module.exports = function(cvs, x, y, w, h, s){
-    canvas = cvs;
+var Ship = module.exports = function(game, x, y, w, h, s){
+    Game = game;
+    canvas = game.canvas;
     ctx = canvas.getContext('2d');
-    this.x = x || this.x;
-    this.y = y || this.y;
+    this.x = this.lastX = x || this.x;
+    this.y = this.lastY = y || this.y;
     this.width = w || this.width;
     this.height = h || this.height;
     this.speed = s || this.speed;
+    socket.on('message', function(action, data){
+        if(action === 'posUpdated'){
+            this.x = data.x;
+            this.y = data.y;
+        }
+    }.bind(this));
 };
 
 Ship.prototype = {
@@ -18,7 +26,7 @@ Ship.prototype = {
     height: 70,
     color: '#aaa',
     border: '#666',
-    speed: 5,
+    speed: 15,
     x: 365,
     y: 500,
     draw: function(){
@@ -48,5 +56,14 @@ var handleKeys = function(){
     if(pressed[KEYS.DOWN]){
         limit = canvas.height - this.height;
         this.y = this.y + this.speed > limit? limit : this.y + this.speed;
+    }
+    if(this.x !== this.lastX || this.y !== this.lastY){ 
+        this.lastX = this.x;
+        this.lastY = this.y;
+        socket.send('updatePos', {
+            playerID: Game.playerID, 
+            x: this.x, 
+            y: this.y
+        });
     }
 };

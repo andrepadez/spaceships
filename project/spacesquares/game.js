@@ -2,13 +2,15 @@ var Ship = require('./gameobjects/spaceship.js');
 
 var Game = module.exports = {
 	init: function(canvas){
+        this.playerID = localStorage.playerID || Math.floor(Math.random()*100000000);
+        localStorage.playerID = this.playerID;
         this.canvas = canvas;
         this.ctx = canvas.getContext('2d');
         this.spawnGameObjects();
         this.startGameLoop();
 	}, 
     spawnGameObjects: function(){
-        this.ship = new Ship(this.canvas);
+        this.ship = new Ship(this);
     },
     update: function(){
         this.ctx.clearRect(0,0, this.canvas.width, this.canvas.height);
