@@ -1,42 +1,34 @@
-var socket = require('../comm/socket.js');
+var socket = require('../comm/socket.js'); console.log('socket', socket);
 var keyboard = require('../events/keyboard.js');
 var KEYS = keyboard.KEYS;
 
 var Game, canvas, ctx;
 
-var Ship = module.exports = function(game, x, y, w, h, s){
+var Ship = function(game){
     Game = game;
     canvas = game.canvas;
     ctx = canvas.getContext('2d');
-    this.x = this.lastX = x || this.x;
-    this.y = this.lastY = y || this.y;
-    this.width = w || this.width;
-    this.height = h || this.height;
-    this.speed = s || this.speed;
-    socket.on('message', function(action, data){
-        if(action === 'posUpdated'){
-            this.x = data.x;
-            this.y = data.y;
-        }
-    }.bind(this));
+    setColor.call(this);
+    this.x = Math.floor(Math.random() * canvas.width - this.width);
+    this.y = Math.floor(Math.random() * canvas.height - this.height);
 };
 
 Ship.prototype = {
-    width: 70,
-    height: 70,
+    width: 10,
+    height: 10,
     color: '#aaa',
     border: '#666',
-    speed: 15,
-    x: 365,
-    y: 500,
+    speed: 10,
     draw: function(){
         ctx.beginPath();
         ctx.rect(this.x, this.y, this.width, this.height);
         ctx.fillStyle = this.color;
         ctx.fill();
+        ctx.closePath();
     },
     update: function(){
         handleKeys.call(this);
+        sendUpdate.call(this);
     }
 };
 
@@ -57,13 +49,25 @@ var handleKeys = function(){
         limit = canvas.height - this.height;
         this.y = this.y + this.speed > limit? limit : this.y + this.speed;
     }
+};
+
+var sendUpdate = function(){
     if(this.x !== this.lastX || this.y !== this.lastY){ 
         this.lastX = this.x;
         this.lastY = this.y;
-        socket.send('updatePos', {
-            playerID: Game.playerID, 
-            x: this.x, 
-            y: this.y
-        });
+        socket.emit('updatePos', Game.player);
     }
 };
+
+var setColor = function(){
+    if(localStorage.shipColor){
+        this.color = localStorage.shipColor;
+        return;
+    }
+    this.color = localStorage.shipColor = color = 'rgba(' +
+        Math.floor(Math.random()*256) + ',' +
+        Math.floor(Math.random()*256) + ',' +
+        Math.floor(Math.random()*256) + ', 1)';
+};
+
+module.exports = Ship;

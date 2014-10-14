@@ -29,7 +29,7 @@ module.exports = function(grunt){
     grunt.loadNpmTasks('grunt-shell');
 
     grunt.registerTask('default', ['jshint']);
-    grunt.registerTask('build', ['jshint', 'clean', 'sass', 'browserify', 'replace']);
+    grunt.registerTask('build', [/*'jshint', */'clean', 'sass', 'browserify', 'replace']);
     grunt.registerTask('dev', ['build', 'browserSync', 'watch']);
     grunt.registerTask('test', ['build', 'testem:run:dev']);
 
