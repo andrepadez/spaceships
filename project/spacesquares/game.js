@@ -5,13 +5,10 @@ var Game = module.exports = {
 	init: function(canvas){
         this.heartbeat = 0;
         this.opponents = [];
-        this.playerID = localStorage.playerID || Math.floor(Math.random()*100000000);
-        setupSocket.call(this);
-
-        localStorage.playerID = this.playerID;
         this.canvas = canvas;
         this.ctx = canvas.getContext('2d');
         this.player = new Player(this);
+        setupSocket.call(this);
 	}, 
     update: function(){
         this.ctx.clearRect(0,0, this.canvas.width, this.canvas.height);
@@ -21,7 +18,6 @@ var Game = module.exports = {
     draw: function(){
         this.player.ship.draw();
         this.opponents.forEach(function(opponent){
-            //if(a++ == 0){console.log('draw', opponent.ship.draw);debugger;}
             opponent.ship.draw();
         }.bind(this));
     },
@@ -47,16 +43,20 @@ var setupSocket = function(){
     socket.on('newPlayer', onNewPlayer.bind(this));
     socket.on('currentPlayers', onCurrentPlayers.bind(this));
     socket.on('updatePos', onUpdatePos.bind(this));
+    socket.on('disconnect', onDisconnect.bind(this));
+    socket.on('playerLeave', onPlayerLeave.bind(this));
+    window.onbeforeunload = onDisconnect.bind(this);
+    socket.emit('newPlayer', this.player);
 };
 
-var onNewPlayer = function(player){
+var onNewPlayer = function(player){console.log('here newPlayer', player, Game.player);
     if(player.id !== Game.player.id){
-        //console.log('new player created', player.id, Game.player.id);
+        console.log('new player created', player.id, Game.player.id);
+        this.opponents.push(new Player(Game, player));
     }
 };
 
 var onUpdatePos = function(player){
-    console.log('onUpdatePos', player);
     this.opponents.forEach(function(opponent){
         if(opponent.id === player.id){
             opponent.ship.x = player.ship.x;
@@ -74,18 +74,23 @@ var onCurrentPlayers = function(players){
     spawnOpponents.call(this);
 };
 
-var spawnOpponents = function(){console.log('spawn opponents', this.opponents);
+var spawnOpponents = function(){
     this.opponents.forEach(function(opponent, idx, arr){
         arr[idx] = new Player(this, opponent);
     }.bind(this));
 };
 
 var onConnect = function(){
-    this.canvas.style.display = 'block';console.log('socket.emit', this.player);
-    socket.emit('newPlayer', this.player);
+    this.canvas.style.display = 'block';
     this.startGameLoop();
 };
 
 var onDisconnect = function(){
+    socket.emit('playerLeave', this.player.id);
+};
 
+var onPlayerLeave = function(playerId){
+    this.opponents = this.opponents.filter(function(opponent){
+        return opponent.id !== playerId;
+    });
 };

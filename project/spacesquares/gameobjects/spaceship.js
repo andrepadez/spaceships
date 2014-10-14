@@ -1,4 +1,4 @@
-var socket = require('../comm/socket.js'); console.log('socket', socket);
+var socket = require('../comm/socket.js'); 
 var keyboard = require('../events/keyboard.js');
 var KEYS = keyboard.KEYS;
 
@@ -9,13 +9,13 @@ var Ship = function(game){
     canvas = game.canvas;
     ctx = canvas.getContext('2d');
     setColor.call(this);
-    this.x = Math.floor(Math.random() * canvas.width - this.width);
-    this.y = Math.floor(Math.random() * canvas.height - this.height);
+    this.x = Math.floor( Math.random() * (canvas.width - this.width) );
+    this.y = Math.floor( Math.random() * (canvas.height - this.height) );console.log(this.x, this.y) 
 };
 
 Ship.prototype = {
-    width: 10,
-    height: 10,
+    width: 20,
+    height: 20,
     color: '#aaa',
     border: '#666',
     speed: 10,
