@@ -60,10 +60,6 @@ var sendUpdate = function(){
 };
 
 var setColor = function(){
-    if(localStorage.shipColor){
-        this.color = localStorage.shipColor;
-        return;
-    }
     this.color = localStorage.shipColor = color = 'rgba(' +
         Math.floor(Math.random()*256) + ',' +
         Math.floor(Math.random()*256) + ',' +
